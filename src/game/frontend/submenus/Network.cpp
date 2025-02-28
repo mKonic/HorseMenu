@@ -96,9 +96,6 @@ namespace YimMenu::Submenus
 		auto teleportGroup        = std::make_shared<Group>("Teleport");
 		auto toxicGroup           = std::make_shared<Group>("Toxic");
 		auto miscGroup            = std::make_shared<Group>("Misc");
-		auto infoSpoofingGroup    = std::make_shared<Group>("Info Spoofing");
-		auto blipSpoofingGroup    = std::make_shared<Group>("Blip Spoofing");
-		auto sessionSpoofingGroup = std::make_shared<Group>("Session Spoofing");
 
 		sessionSwitcherGroup->AddItem(std::make_shared<Vector3CommandItem>("newsessionpos"_J));
 		sessionSwitcherGroup->AddItem(std::make_shared<BoolCommandItem>("newsessionposse"_J));
@@ -113,11 +110,7 @@ namespace YimMenu::Submenus
 		toxicGroup->AddItem(std::make_shared<CommandItem>("minhonorall"_J));
 
 		miscGroup->AddItem(std::make_shared<BoolCommandItem>("revealall"_J));
-		miscGroup->AddItem(std::make_shared<BoolCommandItem>("disableshopunavailable"_J)); // finish this
-		miscGroup->AddItem(std::make_shared<BoolCommandItem>("disablecampshopunavailable"_J));
-		miscGroup->AddItem(std::make_shared<BoolCommandItem>("disablecampraids"_J));
-
-		miscGroup->AddItem(std::make_shared<BoolCommandItem>("blockalltelemetry"_J)); // move this to protections->misc
+		miscGroup->AddItem(std::make_shared<BoolCommandItem>("blockalltelemetry"_J));
 		miscGroup->AddItem(std::make_shared<BoolCommandItem>("locklobby"_J));
 
 		session->AddItem(sessionSwitcherGroup);
@@ -223,8 +216,13 @@ namespace YimMenu::Submenus
 				ImGui::PopID();
 			}
 		}));
+
 		static std::string nameBuf, colorBuf = "";
 		static const char* iconBuf = "";
+		auto infoSpoofingGroup    = std::make_shared<Group>("Info Spoofing");
+		auto blipSpoofingGroup    = std::make_shared<Group>("Blip Spoofing");
+		auto sessionSpoofingGroup = std::make_shared<Group>("Session Spoofing");
+
 		infoSpoofingGroup->AddItem(std::make_shared<ImGuiItem>([=] {
 			static std::map<std::string, std::string> colors = {{"", "None"}, {"~e~", "Red"}, {"~f~", "Off White"}, {"~p~", "White"}, {"~o~", "Yellow"}, {"~q~", "Pure White"}, {"~d~", "Orange"}, {"~m~", "Light Grey"}, {"~t~", "Grey"}, {"~v~", "Black"}, {"~pa~", "Blue"}, {"~t1~", "Purple"}, {"~t2~", "Orange"}, {"~t3~", "Teal"}, {"~t4~", "Light Yellow"}, {"~t5~", "Pink"}, {"~t6~", "Green"}, {"~t7~", "Dark Blue"}};
 			static std::map<const char*, std::string> icons = {{"", "None"}, {(const char*)u8"\u2211", "Rockstar Icon"}};
