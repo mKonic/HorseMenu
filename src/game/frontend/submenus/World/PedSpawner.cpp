@@ -165,10 +165,10 @@ namespace YimMenu::Submenus
 					if (!PED::DOES_GROUP_EXIST(group))
 					{
 						group = PED::CREATE_GROUP(0);
-						PED::SET_PED_AS_GROUP_LEADER(YimMenu::Self::GetPed().GetHandle(), group, true);
+						PED::SET_PED_AS_GROUP_LEADER(YimMenu::Self::GetPed().GetHandle(), group, false);
 					}
 
-					ENTITY::SET_ENTITY_AS_MISSION_ENTITY(ped.GetHandle(), false, false);
+					ENTITY::SET_ENTITY_AS_MISSION_ENTITY(ped.GetHandle(), true, true);
 					PED::SET_PED_AS_GROUP_MEMBER(ped.GetHandle(), group);
 					PED::SET_PED_CAN_BE_TARGETTED_BY_PLAYER(ped.GetHandle(), YimMenu::Self::GetPlayer().GetId(), false);
 					PED::SET_PED_RELATIONSHIP_GROUP_HASH(
@@ -176,7 +176,7 @@ namespace YimMenu::Submenus
 
 					PED::SET_GROUP_FORMATION(PED::GET_PED_GROUP_INDEX(ped.GetHandle()), formation);
 
-					DECORATOR::DECOR_SET_INT(ped.GetHandle(), "SH_CMP_companion", 1);
+					DECORATOR::DECOR_SET_INT(ped.GetHandle(), "SH_CMP_companion", 2);
 
 					if (ped.IsAnimal())
 					{
@@ -194,16 +194,16 @@ namespace YimMenu::Submenus
 						FLOCK::SET_ANIMAL_TUNING_FLOAT_PARAM(ped.GetHandle(), 111, 0.0);
 						FLOCK::SET_ANIMAL_TUNING_FLOAT_PARAM(ped.GetHandle(), 107, 0.0);
 					}
-					PED::SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(ped.GetHandle(), true);
+					PED::SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(ped.GetHandle(), false);
 
-					ped.SetConfigFlag(PedConfigFlag::_0x16A14D9A, true);
+					ped.SetConfigFlag(PedConfigFlag::_0x16A14D9A, false);
 					ped.SetConfigFlag(PedConfigFlag::_DisableHorseFleeILO, true);
-					ped.SetConfigFlag(PedConfigFlag::_0x74F95F2E, true);
-					ped.SetConfigFlag(PedConfigFlag::Avoidance_Ignore_All, true);
-					ped.SetConfigFlag(PedConfigFlag::DisableShockingEvents, true);
+					ped.SetConfigFlag(PedConfigFlag::_0x74F95F2E, false);
+					ped.SetConfigFlag(PedConfigFlag::Avoidance_Ignore_All, false);
+					ped.SetConfigFlag(PedConfigFlag::DisableShockingEvents, false);
 					ped.SetConfigFlag(PedConfigFlag::DisablePedAvoidance, false);
-					ped.SetConfigFlag(PedConfigFlag::DisableExplosionReactions, true);
-					ped.SetConfigFlag(PedConfigFlag::DisableEvasiveStep, true);
+					ped.SetConfigFlag(PedConfigFlag::DisableExplosionReactions, false);
+					ped.SetConfigFlag(PedConfigFlag::DisableEvasiveStep, false);
 					ped.SetConfigFlag(PedConfigFlag::DisableHorseGunshotFleeResponse, true);
 
 					auto blip = MAP::BLIP_ADD_FOR_ENTITY("BLIP_STYLE_COMPANION"_J, ped.GetHandle());
