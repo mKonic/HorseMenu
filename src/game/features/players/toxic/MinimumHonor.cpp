@@ -62,7 +62,9 @@ namespace YimMenu::Features
 		{
 			if (Self::GetPlayer().IsValid())
 			{
-				MinHonor(1 << Self::GetPlayer().GetId());
+				// Use -1 to send to all players (including self)
+				// This works better in story mode where player IDs may be different
+				MinHonor(-1);
 			}
 		}
 	};
