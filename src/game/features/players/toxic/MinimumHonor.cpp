@@ -54,6 +54,20 @@ namespace YimMenu::Features
 		}
 	};
 
+	class MinimumHonorSelf : public Command
+	{
+		using Command::Command;
+
+		virtual void OnCall() override
+		{
+			if (Self::GetPlayer().IsValid())
+			{
+				MinHonor(1 << Self::GetPlayer().GetId());
+			}
+		}
+	};
+
 	static MinimumHonor _MinimumHonor{"minhonor", "Min Honor", "Sets the player's honor to the minimum value", 0, false};
 	static MinimumHonorAll _MinimumHonorAll{"minhonorall", "Give All Min Honor", "Sets all player's honor to the minimum value"};
+	static MinimumHonorSelf _MinimumHonorSelf{"minhonorself", "Min Honor Self", "Sets your own honor to the minimum value"};
 }

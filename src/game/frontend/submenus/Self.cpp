@@ -153,6 +153,8 @@ namespace YimMenu::Submenus
 
 		toolsGroup->AddItem(std::make_shared<CommandItem>("suicide"_J));
 		toolsGroup->AddItem(std::make_shared<CommandItem>("clearcrimes"_J));
+		toolsGroup->AddItem(std::make_shared<CommandItem>("maxhonorself"_J));
+		toolsGroup->AddItem(std::make_shared<CommandItem>("minhonorself"_J));
 
 		toolsGroup->AddItem(std::make_shared<BoolCommandItem>("npcignore"_J));
 		toolsGroup->AddItem(std::make_shared<BoolCommandItem>("eagleeye"_J));

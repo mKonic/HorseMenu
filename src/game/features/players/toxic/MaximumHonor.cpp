@@ -54,6 +54,20 @@ namespace YimMenu::Features
 		}
 	};
 
+	class MaximumHonorSelf : public Command
+	{
+		using Command::Command;
+
+		virtual void OnCall() override
+		{
+			if (Self::GetPlayer().IsValid())
+			{
+				MaxHonor(1 << Self::GetPlayer().GetId());
+			}
+		}
+	};
+
 	static MaximumHonor _MaximumHonor{"maxhonor", "Max Honor", "Sets the player's honor to the maximum value", 0, false};
 	static MaximumHonorAll _MaximumHonorAll{"maxhonorall", "Give All Max Honor", "Sets all player's honor to the maximum value"};
+	static MaximumHonorSelf _MaximumHonorSelf{"maxhonorself", "Max Honor Self", "Sets your own honor to the maximum value"};
 }
