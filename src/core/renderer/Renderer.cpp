@@ -599,6 +599,13 @@ namespace YimMenu
 		VkQueue GraphicQueue            = VK_NULL_HANDLE;
 		const bool QueueSupportsGraphic = DoesQueueSupportGraphic(queue, &GraphicQueue);
 
+		// The submits below wait on the semaphores the present was going to wait
+		// on, and a binary semaphore can only be waited on once, so the present
+		// has to wait on the ones we signal instead - otherwise it waits forever.
+		// Lives past this function because the present reads it.
+		static thread_local std::vector<VkSemaphore> presentWaitSemaphores;
+		presentWaitSemaphores.clear();
+
 		for (uint32_t i = 0; i < pPresentInfo->swapchainCount; ++i)
 		{
 			VkSwapchainKHR swapchain = pPresentInfo->pSwapchains[i];
@@ -753,6 +760,15 @@ namespace YimMenu
 					return;
 				}
 			}
+
+			presentWaitSemaphores.push_back(fsd->ImageAcquiredSemaphore);
+		}
+
+		if (!presentWaitSemaphores.empty())
+		{
+			auto* presentInfo              = const_cast<VkPresentInfoKHR*>(pPresentInfo);
+			presentInfo->waitSemaphoreCount = static_cast<uint32_t>(presentWaitSemaphores.size());
+			presentInfo->pWaitSemaphores    = presentWaitSemaphores.data();
 		}
 	}
 
