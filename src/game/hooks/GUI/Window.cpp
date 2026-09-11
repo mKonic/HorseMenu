@@ -1,3 +1,4 @@
+#include "core/Trace.hpp"
 #include "core/hooking/DetourHook.hpp"
 #include "core/renderer/Renderer.hpp"
 #include "game/hooks/Hooks.hpp"
@@ -7,6 +8,7 @@ namespace YimMenu::Hooks
 {
 	LRESULT Window::WndProc(HWND hwnd, UINT umsg, WPARAM wparam, LPARAM lparam)
 	{
+		TRACE_SCOPE("WndProc");
 		if (g_Running)
 			Renderer::WndProc(hwnd, umsg, wparam, lparam);
 
@@ -15,6 +17,7 @@ namespace YimMenu::Hooks
 	
 	BOOL Window::SetCursorPos(int x, int y)
 	{
+		TRACE_SCOPE("SetCursorPos");
 		if (GUI::IsOpen() && !Renderer::IsResizing())
 		{
 			return true;
@@ -25,6 +28,7 @@ namespace YimMenu::Hooks
 
 	BOOL Window::ShowWindow(HWND hWnd, int nCmdShow)
 	{
+		TRACE_SCOPE("ShowWindow");
 		LOG(INFO) << hWnd << " " << nCmdShow;
 		// prevent game from hiding console window
 		if (hWnd == GetConsoleWindow() && nCmdShow == 0)

@@ -1,3 +1,4 @@
+#include "core/Trace.hpp"
 #include "ScriptMgr.hpp"
 #include "game/rdr/Scripts.hpp"
 
@@ -59,6 +60,7 @@ namespace YimMenu
 
 	void ScriptMgr::TickImpl()
 	{
+		TRACE_SCOPE("ScriptMgrTick");
 		auto startup = Scripts::FindScriptThread("startup"_J);
 
 		if (startup)

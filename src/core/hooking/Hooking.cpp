@@ -5,6 +5,7 @@
 #include "DetourHook.hpp"
 #include "VMTHook.hpp"
 #include "VtableHook.hpp"
+#include "core/TestFlags.hpp"
 #include "core/memory/ModuleMgr.hpp"
 #include "game/hooks/Hooks.hpp"
 #include "game/pointers/Pointers.hpp"
@@ -134,10 +135,17 @@ namespace YimMenu
 
 	bool Hooking::LateInitImpl()
 	{
-		BaseHook::Add<Hooks::Window::WndProc>(new DetourHook("WndProc", Pointers.WndProc, Hooks::Window::WndProc));
-		BaseHook::Add<Hooks::Window::SetCursorPos>(new DetourHook("SetCursorPos", ModuleMgr.Get("user32.dll")->GetExport<void*>("SetCursorPos"), Hooks::Window::SetCursorPos));
+		if (TestFlag("no-wndproc"))
+			LOG(WARNING) << "testflags: not hooking WndProc/SetCursorPos";
+		else
+		{
+			BaseHook::Add<Hooks::Window::WndProc>(new DetourHook("WndProc", Pointers.WndProc, Hooks::Window::WndProc));
+			BaseHook::Add<Hooks::Window::SetCursorPos>(new DetourHook("SetCursorPos", ModuleMgr.Get("user32.dll")->GetExport<void*>("SetCursorPos"), Hooks::Window::SetCursorPos));
+		}
 
-		if (Pointers.IsVulkan)
+		if (TestFlag("no-render-hooks"))
+			LOG(WARNING) << "testflags: not hooking the renderer";
+		else if (Pointers.IsVulkan)
 		{
 			BaseHook::Add<Hooks::Vulkan::QueuePresentKHR>(new DetourHook("Vulkan::QueuePresentKHR", Pointers.QueuePresentKHR, Hooks::Vulkan::QueuePresentKHR));
 			BaseHook::Add<Hooks::Vulkan::CreateSwapchainKHR>(new DetourHook("Vulkan::CreateSwapchainKHR", Pointers.CreateSwapchainKHR, Hooks::Vulkan::CreateSwapchainKHR));

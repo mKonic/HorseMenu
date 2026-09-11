@@ -1,4 +1,5 @@
 #define IMGUI_DEFINE_MATH_OPERATORS
+#include "core/Trace.hpp"
 #include "Renderer.hpp"
 
 #include "core/memory/ModuleMgr.hpp"
@@ -585,6 +586,7 @@ namespace YimMenu
 
 	void Renderer::VkOnPresentImpl(VkQueue queue, const VkPresentInfoKHR* pPresentInfo)
 	{
+		TRACE_SCOPE("VkOnPresent");
 		if (!m_VkDevice || !g_Running || IsResizing())
 		{
 			return;

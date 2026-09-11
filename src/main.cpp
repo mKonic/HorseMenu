@@ -1,5 +1,7 @@
 #include "common.hpp"
 #include "core/commands/HotkeySystem.hpp"
+#include "core/TestFlags.hpp"
+#include "core/Trace.hpp"
 #include "core/filemgr/FileMgr.hpp"
 #include "core/frontend/Notifications.hpp"
 #include "core/hooking/Hooking.hpp"
@@ -46,18 +48,26 @@ namespace YimMenu
 			LOG(WARNING) << "Failed to find some pointers";
 		Hooking::LateInit();
 
-		ScriptMgr::Init();
-		LOG(INFO) << "ScriptMgr initialized";
+		if (TestFlag("no-scripts"))
+			LOG(WARNING) << "testflags: not starting ScriptMgr/FiberPool";
+		else
+		{
+			ScriptMgr::Init();
+			LOG(INFO) << "ScriptMgr initialized";
 
-		FiberPool::Init(5);
-		LOG(INFO) << "FiberPool initialized";
+			FiberPool::Init(5);
+			LOG(INFO) << "FiberPool initialized";
+		}
 
 		GUI::Init();
 
-		ScriptMgr::AddScript(std::make_unique<Script>(&FeatureLoop));
-		ScriptMgr::AddScript(std::make_unique<Script>(&BlockControlsForUI));
-		ScriptMgr::AddScript(std::make_unique<Script>(&ContextMenuTick));
-		ScriptMgr::AddScript(std::make_unique<Script>(&MapEditor::Update));
+		if (!TestFlag("no-scripts"))
+		{
+			ScriptMgr::AddScript(std::make_unique<Script>(&FeatureLoop));
+			ScriptMgr::AddScript(std::make_unique<Script>(&BlockControlsForUI));
+			ScriptMgr::AddScript(std::make_unique<Script>(&ContextMenuTick));
+			ScriptMgr::AddScript(std::make_unique<Script>(&MapEditor::Update));
+		}
 
 		Notifications::Show("Terminus", "Loaded succesfully", NotificationType::Success);
 
@@ -68,6 +78,7 @@ namespace YimMenu
 		while (g_Running)
 		{
 			Settings::Tick(); // TODO: move this somewhere else
+			TraceDump();
 		}
 
 		LOG(INFO) << "Unloading";

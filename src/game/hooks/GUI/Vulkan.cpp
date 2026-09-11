@@ -1,3 +1,4 @@
+#include "core/Trace.hpp"
 #include "core/hooking/DetourHook.hpp"
 #include "core/hooking/VMTHook.hpp"
 #include "core/renderer/Renderer.hpp"
@@ -7,6 +8,7 @@ namespace YimMenu::Hooks
 {
 	VkResult VKAPI_CALL Vulkan::QueuePresentKHR(VkQueue queue, const VkPresentInfoKHR* pPresentInfo)
 	{
+		TRACE_SCOPE("VkQueuePresent");
 		Renderer::VkOnPresent(queue, pPresentInfo);
 
 		return BaseHook::Get<Vulkan::QueuePresentKHR, DetourHook<decltype(&QueuePresentKHR)>>()->Original()(queue, pPresentInfo);
@@ -14,6 +16,7 @@ namespace YimMenu::Hooks
 
 	VkResult VKAPI_CALL Vulkan::CreateSwapchainKHR(VkDevice device, const VkSwapchainCreateInfoKHR* pCreateInfo, const VkAllocationCallbacks* pAllocator, VkSwapchainKHR* pSwapchain)
 	{
+		TRACE_SCOPE("VkCreateSwapchain");
 		if (pCreateInfo)
 		{
 			Renderer::SetResizing(true);
@@ -33,6 +36,7 @@ namespace YimMenu::Hooks
 
 	VkResult VKAPI_CALL Vulkan::AcquireNextImageKHR(VkDevice device, VkSwapchainKHR swapchain, uint64_t timeout, VkSemaphore semaphore, VkFence fence, uint32_t* pImageIndex) 
 	{
+		TRACE_SCOPE("VkAcquireImage");
 	    Renderer::VkSetDevice(device);
 
 		return BaseHook::Get<Vulkan::AcquireNextImageKHR, DetourHook<decltype(&AcquireNextImageKHR)>>()->Original()(device, swapchain, timeout, semaphore, fence, pImageIndex);
