@@ -61,7 +61,9 @@ namespace YimMenu
 
 	void GUI::WndProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 	{
-		if (msg == WM_KEYUP && wparam == VK_INSERT)
+		// F9 and Home as well: a keyboard without a nav cluster only reaches
+		// Insert through an Fn layer, which the game may never see.
+		if (msg == WM_KEYUP && (wparam == VK_INSERT || wparam == VK_F9 || wparam == VK_HOME))
 		{
 			// Persist and restore the cursor position between menu instances
 			static POINT CursorCoords{};
