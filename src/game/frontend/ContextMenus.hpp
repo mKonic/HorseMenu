@@ -11,34 +11,34 @@
 
 namespace YimMenu
 {
-	inline ContextOperationsMenu ContextMenuDefault = ContextOperationsMenu("Default", {ContextMenuOperation{"Error", [&](Entity) {
+	inline ContextOperationsMenu ContextMenuDefault = ContextOperationsMenu("Default", {ContextMenuOperation{"Error", [](Entity) {
 	                                                                                                         }}});
 
 	inline ContextOperationsMenu ContextMenuPlayers = ContextOperationsMenu("Players",
 	    {
 	        ContextMenuOperation{"Set Selected",
-	            [&](Entity entity) {
+	            [](Entity entity) {
 		            YimMenu::Players::SetSelected(Ped(entity.GetHandle()).GetPlayer());
 	            }},
 	        {"Teleport to",
-	            [&](Entity entity) {
+	            [](Entity entity) {
 		            Teleport::TeleportEntity(Self::GetPed().GetHandle(), entity.GetPosition(), false);
 	            }},
 	        {"Teleport Behind",
-	            [&](Entity entity) {
+	            [](Entity entity) {
 		            auto playerCoords = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(entity.GetHandle(), 0, -10, 0);
 		            Teleport::TeleportEntity(Self::GetPed().GetHandle(), {playerCoords.x, playerCoords.y, playerCoords.z}, true);
 	            }},
 	        {"Explode",
-	            [&](Entity entity) {
+	            [](Entity entity) {
 		            Commands::GetCommand<PlayerCommand>("explode"_J)->Call(Ped(entity.GetHandle()).GetPlayer());
 	            }},
 	        {"Set Defensive",
-	            [&](Entity entity) {
+	            [](Entity entity) {
 		            Commands::GetCommand<PlayerCommand>("defensive"_J)->Call(Ped(entity.GetHandle()).GetPlayer());
 	            }},
 	        {"Set Offensive",
-	            [&](Entity entity) {
+	            [](Entity entity) {
 		            Commands::GetCommand<PlayerCommand>("offensive"_J)->Call(Ped(entity.GetHandle()).GetPlayer());
 	            }},
 	    });
@@ -46,16 +46,16 @@ namespace YimMenu
 	inline ContextOperationsMenu ContextMenuPeds = ContextOperationsMenu("Peds",
 	    {
 	        ContextMenuOperation{"Explode",
-	            [&](Entity entity) {
+	            [](Entity entity) {
 		            auto pedCoords = entity.GetPosition();
 		            FIRE::ADD_EXPLOSION(pedCoords.x, pedCoords.y, pedCoords.z, (int)ExplosionTypes::UNK, 10.0f, true, false, 1.0f);
 	            }},
 	        {"Kill",
-	            [&](Entity entity) {
+	            [](Entity entity) {
 		            entity.Kill();
 	            }},
 	        {"Apply Force",
-	            [&](Entity entity) {
+	            [](Entity entity) {
 		            auto currentCoords = entity.GetPosition();
 		            ENTITY::APPLY_FORCE_TO_ENTITY_CENTER_OF_MASS(entity.GetHandle(),
 		                1,
@@ -68,7 +68,7 @@ namespace YimMenu
 		                false);
 	            }},
 	        {"Copy Hash",
-	            [&](Entity entity) {
+	            [](Entity entity) {
 		            Hash modelHash = entity.GetModel();
 
 		            ImGui::SetClipboardText(std::format("0x{:08X}", (joaat_t)modelHash).c_str());
@@ -80,12 +80,12 @@ namespace YimMenu
 	inline ContextOperationsMenu ContextMenuVehicles = ContextOperationsMenu("Vehicles",
 	    {
 	        ContextMenuOperation{"Explode",
-	            [&](Entity entity) {
+	            [](Entity entity) {
 		            auto pedCoords = entity.GetPosition();
 		            FIRE::ADD_EXPLOSION(pedCoords.x, pedCoords.y, pedCoords.z, (int)ExplosionTypes::UNK, 10.0f, true, false, 1.0f);
 	            }},
 	        {"Apply Force",
-	            [&](Entity entity) {
+	            [](Entity entity) {
 		            auto currentCoords = entity.GetPosition();
 		            ENTITY::APPLY_FORCE_TO_ENTITY_CENTER_OF_MASS(entity.GetHandle(),
 		                1,
@@ -98,7 +98,7 @@ namespace YimMenu
 		                false);
 	            }},
 	        {"Copy Hash",
-	            [&](Entity entity) {
+	            [](Entity entity) {
 		            Hash modelHash = entity.GetModel();
 
 		            ImGui::SetClipboardText(std::format("0x{:08X}", (joaat_t)modelHash).c_str());
@@ -110,12 +110,12 @@ namespace YimMenu
 	inline ContextOperationsMenu ContextMenuObjects = ContextOperationsMenu("Objects",
 	    {
 	        ContextMenuOperation{"Explode",
-	            [&](Entity entity) {
+	            [](Entity entity) {
 		            auto pedCoords = entity.GetPosition();
 		            FIRE::ADD_EXPLOSION(pedCoords.x, pedCoords.y, pedCoords.z, (int)ExplosionTypes::UNK, 10.0f, true, false, 1.0f);
 	            }},
 	        {"Apply Force",
-	            [&](Entity entity) {
+	            [](Entity entity) {
 		            auto currentCoords = entity.GetPosition();
 		            ENTITY::APPLY_FORCE_TO_ENTITY_CENTER_OF_MASS(entity.GetHandle(),
 		                1,
@@ -128,7 +128,7 @@ namespace YimMenu
 		                false);
 	            }},
 	        {"Copy Hash",
-	            [&](Entity entity) {
+	            [](Entity entity) {
 		            Hash modelHash = entity.GetModel();
 
 		            ImGui::SetClipboardText(std::format("0x{:08X}", (joaat_t)modelHash).c_str());

@@ -75,6 +75,11 @@ namespace YimMenu
 	};
 
 	template<Signature S>
+	class Pattern;
+	template<Signature S>
+	inline std::ostream& operator<<(std::ostream& os, const Pattern<S>& pattern);
+
+	template<Signature S>
 	class Pattern final : public IPattern
 	{
 	private:

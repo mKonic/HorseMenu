@@ -120,7 +120,7 @@ namespace YimMenu
 	static ImVec4 Red              = ImVec4(0.69f, 0.29f, 0.29f, 1.f);
 	static ImVec4 Blue             = ImVec4(0.36f, 0.71f, 0.89f, 1.f);
 
-	static auto boneToScreen = [=](rage::fvector3 bone) -> ImVec2 {
+	static auto boneToScreen = [](rage::fvector3 bone) -> ImVec2 {
 		float screen_x, screen_y;
 		float boneCoords[3] = {bone.x, bone.y, bone.z};
 

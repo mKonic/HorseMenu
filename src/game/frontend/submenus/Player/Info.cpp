@@ -46,7 +46,7 @@ namespace YimMenu::Submenus
 					}
 				}
 
-				ImGui::Text("Rank: %s", std::to_string(Players::GetSelected().GetRank()));
+				ImGui::Text("Rank: %s", std::to_string(Players::GetSelected().GetRank()).c_str());
 
 				if (Players::GetSelected().GetPed())
 				{

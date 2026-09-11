@@ -28,7 +28,7 @@ namespace YimMenu::Submenus
 
 		if (ImGui::BeginPopupModal("##deletelocation", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove))
 		{
-			ImGui::Text("Are you sure you want to delete %s?", locationToDelete.name);
+			ImGui::Text("Are you sure you want to delete %s?", locationToDelete.name.c_str());
 
 			ImGui::Spacing();
 

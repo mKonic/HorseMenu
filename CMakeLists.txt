@@ -39,6 +39,12 @@ target_link_libraries(${PROJECT_NAME} PRIVATE AsyncLogger imgui minhook nlohmann
 
 add_compile_definitions("_CRT_SECURE_NO_WARNINGS" "NOMINMAX" "WIN32_LEAN_AND_MEAN")
 
+if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+    # The crossmap stores hashes above INT64_MAX in the signed rage::scrNativeHash;
+    # MSVC wraps them silently, clang makes it an error.
+    target_compile_options(${PROJECT_NAME} PRIVATE -Wno-c++11-narrowing)
+endif()
+
 if(MSVC)
     set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} /LTCG /OPT:REF,ICF /GUARD:NO")
     string(REPLACE "/Ob1" "/Ob3" CMAKE_CXX_FLAGS_RELWITHDEBINFO ${CMAKE_CXX_FLAGS_RELWITHDEBINFO})
