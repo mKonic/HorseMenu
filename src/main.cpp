@@ -79,6 +79,9 @@ namespace YimMenu
 		{
 			Settings::Tick(); // TODO: move this somewhere else
 			TraceDump();
+			// Nothing here is frame critical, and without this the loop keeps a
+			// core busy for as long as the menu is loaded.
+			std::this_thread::sleep_for(50ms);
 		}
 
 		LOG(INFO) << "Unloading";
