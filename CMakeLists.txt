@@ -13,7 +13,9 @@ include(cmake/rdr-classes.cmake)
 
 # source
 set(SRC_DIR "${PROJECT_SOURCE_DIR}/src")
-file(GLOB_RECURSE SRC_FILES
+# CONFIGURE_DEPENDS: without it a new source file is silently left out of the
+# build until someone reconfigures by hand.
+file(GLOB_RECURSE SRC_FILES CONFIGURE_DEPENDS
     "${SRC_DIR}/**.hpp"
     "${SRC_DIR}/**.cpp"
 )
