@@ -1,17 +1,33 @@
+#include "core/Trace.hpp"
 #include "core/hooking/DetourHook.hpp"
-#include "game/backend/Protections.hpp"
 #include "game/hooks/Hooks.hpp"
+
+#include <mutex>
+#include <set>
 
 namespace YimMenu::Hooks
 {
-	// This is *not* noreturn
 	void Misc::ThrowFatalError(int code, int fileHash, int fileLine)
 	{
-		//Make an exception to log the stack.
-		int* nullPointer = 0;
-		*nullPointer      = 69;
+		TRACE_SCOPE("ThrowFatalError");
 
-		//Spams the log with no actual information, eventually crashes the game
-		//LOG(FATAL) << "RECEIVED FATAL ERROR | Code = " << HEX((uint32_t)code) << " | FileHash = " << HEX((uint32_t)fileHash) << " | FileLine = " << (uint32_t)fileLine << " | ReturnAddress = " << HEX((__int64)_ReturnAddress() - (__int64)GetModuleHandle(0));
+		// Upstream raises an access violation here so the game's crash handler
+		// prints a stack. That handler stops every thread and never returns
+		// under wine, which looks like the game freezing for good, so record
+		// the error instead and let the game carry on. Once per error, since
+		// the game can raise the same one every frame.
+		static std::mutex mutex;
+		static std::set<std::tuple<int, int, int>> seen;
+
+		const auto error = std::make_tuple(code, fileHash, fileLine);
+		bool first       = false;
+		{
+			std::lock_guard lock(mutex);
+			first = seen.insert(error).second;
+		}
+
+		if (first)
+			LOG(WARNING) << "Swallowed a game fatal error: code = " << HEX((uint32_t)code)
+			             << " | fileHash = " << HEX((uint32_t)fileHash) << " | fileLine = " << (uint32_t)fileLine;
 	}
 }
