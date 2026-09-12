@@ -1,3 +1,4 @@
+#include "game/rdr/Honor.hpp"
 #include "Self.hpp"
 
 #include "core/commands/BoolCommand.hpp"
@@ -136,6 +137,12 @@ namespace YimMenu::Submenus
 		globalsGroup->AddItem(std::make_shared<BoolCommandItem>("noragdoll"_J));
 		globalsGroup->AddItem(std::make_shared<BoolCommandItem>("antiafk"_J));
 		globalsGroup->AddItem(std::make_shared<BoolCommandItem>("keephonormaxed"_J));
+		globalsGroup->AddItem(std::make_shared<ImGuiItem>([] {
+			if (!StoryHonorReady())
+				ImGui::Text("Honor: waiting for the game");
+			else
+				ImGui::Text("Honor: %d / %d%s", GetStoryHonor(), StoryHonorMax, GetStoryHonor() >= StoryHonorMax ? " (max)" : "");
+		}));
 		globalsGroup->AddItem(std::make_shared<IntCommandItem>("moneyamount"_J));
 		globalsGroup->AddItem(std::make_shared<CommandItem>("addmoney"_J));
 		globalsGroup->AddItem(std::make_shared<BoolCommandItem>("keepbarsfilled"_J));
