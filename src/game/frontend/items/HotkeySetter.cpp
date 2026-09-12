@@ -10,6 +10,12 @@ namespace YimMenu
 	{
 	}
 
+	HotkeySetter::HotkeySetter(joaat_t command_id, std::string label) :
+	    m_Id(command_id),
+	    m_Label(std::move(label))
+	{
+	}
+
 	void HotkeySetter::Draw()
 	{
 		auto Command = Commands::GetCommand(m_Id);
@@ -26,7 +32,7 @@ namespace YimMenu
 			}
 			else
 			{
-				ImGui::Button(Command->GetLabel().data());
+				ImGui::Button(m_Label.empty() ? Command->GetLabel().data() : m_Label.c_str());
 				CommandHotkeyLink->m_BeingModified = ImGui::IsItemActive();
 
 				if (CommandHotkeyLink->m_BeingModified)

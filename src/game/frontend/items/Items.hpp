@@ -135,10 +135,14 @@ namespace YimMenu
 	public:
 
 		explicit HotkeySetter(joaat_t);
+		// The hotkey list is flat, so it passes a label that says which command
+		// this is when two of them share one.
+		HotkeySetter(joaat_t, std::string label);
 		void Draw() override;
 
 	private:
 		joaat_t m_Id;
+		std::string m_Label;
 	};
 
 	class Group : public UIItem
